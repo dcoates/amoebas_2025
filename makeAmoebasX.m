@@ -1,6 +1,6 @@
 close all
 clear all
-octave_flag = true% 
+octave_flag = false% 
 if octave_flag
   octave_core_file_limit(-1)
   crash_dumps_octave_core(0)
@@ -38,7 +38,7 @@ amoeba_struct.fourier_max_holdout     = 2^4; %% set to 2^5 (or infinity) for tes
 amoeba_struct.min_gap                 = 4; 
 amoeba_struct.max_gap                 = 16;
 amoeba_struct.base_shape              = 0;
-amoeba_struct.root_path               = '/vast/home/gkenyon/amoeba2D/big';
+amoeba_struct.root_path               = './images';
 amoeba_struct.foldername              = "target";
 
 num_trials                            = 4;
@@ -62,7 +62,7 @@ num_fourier = amoeba_struct.fourier_max
     else
       amoeba_struct.num_targets     = 0;
       amoeba2D_foldername           = 'distractor';
-    endif
+    end%if
     amoeba_struct.num_distractors   = 4 - amoeba_struct.num_targets;
     amoeba_struct.foldername        = amoeba2D_foldername;
     amoeba2D_parent_folderpath      = [amoeba_struct.root_path, filesep, amoeba2D_parent_foldername];
@@ -75,23 +75,23 @@ num_fourier = amoeba_struct.fourier_max
 
       if mod( i_trial, plot_skip ) == 0
 	disp(amoeba_struct.name);
-      endif
+      end%if
       [amoeba_image]                = amoeba2Dxx(amoeba_struct);
       
       if plot_amoeba2D 
 	[fh_amoeba2D]               = figure('name', amoeba2D_filename);
 	plotAmoeba2Dx(amoeba_struct, amoeba_image, fh_amoeba2D);
-	%%saveas(fh_amoeba2D, [amoeba2D_filename, '.png'], 'png');
+	saveas(fh_amoeba2D, [amoeba2D_filename, '.png'], 'png');
 	print(fh_amoeba2D, [amoeba2D_filename, '.png']);
 	close(fh_amoeba2D);
-      endif
+      end%if
 
       
       
-    endfor % i_trial
+    end%for % i_trial
     
 %%  endfor % num_fourier_pow2
   
-endfor % for num_targets
+end%for % for num_targets
 
   

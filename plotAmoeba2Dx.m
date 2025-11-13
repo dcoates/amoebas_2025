@@ -2,11 +2,11 @@ function plotAmoeba2Dx(amoeba_struct, amoeba_image, fh_amoeba2D)
 
   if ~exist('amoeba_struct') || isempty(amoeba_struct)
     error('plotAmoeba2D requires amoeba_struct');
-  endif
+  end%if
 
   if ~exist('amoeba_image') || isempty(amoeba_image)
     [amoeba_image] = amoeba2Dx(amoeba_struct)
-  endif
+  end%if
 
   if nargin <= 2
     fh_amoeba2D = figure('Name', 'amoeba');
@@ -16,8 +16,8 @@ function plotAmoeba2Dx(amoeba_struct, amoeba_image, fh_amoeba2D)
       hold on;
     else
       clf(fh_amoeba2D);
-    endif
-  endif
+    end%if
+  end%if
   figure(fh_amoeba2D);
   set(fh_amoeba2D, 'Units', 'pixels');
   axis tight
@@ -45,8 +45,8 @@ function plotAmoeba2Dx(amoeba_struct, amoeba_image, fh_amoeba2D)
         set(ph, 'Color', 'k');
       else
         set(ph, 'Color', 'k');
-      endif
-    endfor 
-  endfor
+      end%if
+    end%for 
+  end%for
 
-endfunction
+end%function

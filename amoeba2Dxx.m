@@ -4,7 +4,7 @@ function [amoeba_image] = amoeba2Dxx(amoeba_struct)
 % the following parameters should be packaged into an amoeba
   if nargin == 0
     error('amoeba2Dxx requires amoeba_struct');
-  endif
+  end%if
 
   amoeba_image = cell( amoeba_struct.num_targets + amoeba_struct.num_distractors, 2 );
 
@@ -23,13 +23,13 @@ function [amoeba_image] = amoeba2Dxx(amoeba_struct)
     [amoeba_image_x, amoeba_image_y] = amoebaSegments2x(amoeba_struct, 0);
     amoeba_image{i_amoeba, 1} = amoeba_image_x;
     amoeba_image{i_amoeba, 2} = amoeba_image_y;
-  endfor
+  end%for
 
   %%make distractors
   for i_amoeba = amoeba_struct.num_targets + 1 : amoeba_struct.num_targets + amoeba_struct.num_distractors
     [amoeba_image_x, amoeba_image_y] = amoebaSegments2x(amoeba_struct, 1);
     amoeba_image{i_amoeba, 1} = amoeba_image_x;
     amoeba_image{i_amoeba, 2} = amoeba_image_y;
-  endfor
+  end%for
 
-endfunction
+end%function
