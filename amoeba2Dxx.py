@@ -19,8 +19,7 @@ def amoeba2Dxx(amoeba_struct, seed_target, seed_clutter):
     amoeba_struct.fourier_arg2 = farg2
 
     ## exponential is too regular...
-    amoeba_struct.fourier_ratio = ones( (amoeba_struct.num_fourier, 1) );
-    amoeba_struct.fourier_ratio = 1.0 / sqrt(arange(0,amoeba_struct.num_fourier)+1);
+    amoeba_struct.fourier_ratio = (1.0 / (arange(0,amoeba_struct.num_fourier)+1)**1.2  );
     amoeba_struct.fourier_ratio[amoeba_struct.fourier_min_holdout-1:amoeba_struct.fourier_min_holdout] = 0;
     amoeba_struct.delta_segment = amoeba_struct.num_phi / amoeba_struct.num_segments;
 
