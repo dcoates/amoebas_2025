@@ -29,7 +29,9 @@ def render_segment(buf, start, end, onval=255):
     return points
 
 
-def render_amoeba(buf, xs, ys, onval=255):
+def render_amoeba(buf, xs, ys, onval=255, clear_buf=True):
+    if clear_buf:
+        buf *= 0
     for nobj in np.arange(len(xs)):
         for nseg in np.arange(len(xs[nobj])):
             for nrad in np.arange(len(xs[nobj][nseg])):
