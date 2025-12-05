@@ -13,15 +13,15 @@ class AmoebaStruct:
         ## big      amoebas: 0.60 -> 0.85
         ## medium   amoebas: 0.40 -> 0.60
         ## small    amoebas: 0.25 -> 0.40
-        if size=='large':
-            self.target_outer_max        = 0.85;#max/min outer radius of target annulus, units of image rect
-            self.target_outer_min        = 0.60;
+        if size=='small':
+            self.target_outer_max        = 0.40;#max/min outer radius of target annulus, units of image rect
+            self.target_outer_min        = 0.25;
         elif size=='medium':
             self.target_outer_max        = 0.60;#max/min outer radius of target annulus, units of image rect
             self.target_outer_min        = 0.40;
-        elif size=='small':
-            self.target_outer_max        = 0.40;#max/min outer radius of target annulus, units of image rect
-            self.target_outer_min        = 0.25;
+        else: # Large is also default
+            self.target_outer_max        = 0.85;#max/min outer radius of target annulus, units of image rect
+            self.target_outer_min        = 0.60;
 
         self.target_inner_max        = 0.85;##max/min inner radius in units of outer radius
         self.target_inner_min        = 0.15;##
