@@ -97,12 +97,32 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
     fourier_sum                            = sum(fourier_term, 0);
     fourier_max                            = np.max(fourier_sum);
     fourier_min                            = np.min(fourier_sum);
+    if (distractor_flag == 1) and (amoeba_struct.random_distractor_sizes):
+        which_size=np.random.randint(3)
+        if which_size==0:
+            outer_max=amoeba_struct.outer_max_S
+            outer_min=amoeba_struct.outer_min_S
+            inner_max=amoeba_struct.inner_max
+            inner_min=amoeba_struct.inner_min
+        elif which_size==1:
+            outer_max=amoeba_struct.outer_max_M
+            outer_min=amoeba_struct.outer_min_M
+            inner_max=amoeba_struct.inner_max
+            inner_min=amoeba_struct.inner_min
+        else:
+            outer_max=amoeba_struct.outer_max_L
+            outer_min=amoeba_struct.outer_min_L
+            inner_max=amoeba_struct.inner_max
+            inner_min=amoeba_struct.inner_min
+    else:
+        outer_max=amoeba_struct.target_outer_max
+        outer_min=amoeba_struct.target_outer_min
+        inner_max=amoeba_struct.inner_max
+        inner_min=amoeba_struct.inner_min
     outer_diameter                         = \
-        ( random.rand(1) * ( amoeba_struct.target_outer_max - amoeba_struct.target_outer_min ) + amoeba_struct.target_outer_min ) \
-        * fix(amoeba_struct.image_rect_size/2);
+        ( random.rand(1) * ( outer_max - outer_min ) + outer_min ) * fix(amoeba_struct.image_rect_size/2);
     inner_diameter                         = \
-        ( random.rand(1) * ( amoeba_struct.target_inner_max - amoeba_struct.target_inner_min ) + amoeba_struct.target_inner_min ) \
-        * outer_diameter;
+        ( random.rand(1) * ( inner_max - inner_min ) + inner_min ) * outer_diameter;
     r_phi                                  = inner_diameter + \
         ( fourier_sum - fourier_min ) * \
         ( outer_diameter - inner_diameter ) / (fourier_max - fourier_min +  ( (fourier_max - fourier_min) == 0 ) );
