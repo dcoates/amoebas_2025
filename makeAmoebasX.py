@@ -31,7 +31,7 @@ class AmoebaStruct:
             self.target_outer_min        = self.outer_min_L
 
         self.random_distractor_sizes = 1; # Randomize (S/M or L) the size of each distractor segment?
-        self.inner_max        = 0.85;##max/min inner radius in units of outer radius
+        self.inner_max        = 0.75;##max/min inner radius in units of outer radius
         self.inner_min        = 0.15;##
         self.num_phi                 = 1024;
         self.fourier_sparsity        = 0.5;
