@@ -1,6 +1,6 @@
 from numpy import *
 from amoebaSegments2x import amoebaSegments2x
-def amoeba2Dxx(amoeba_struct, seed_target, seed_clutter):
+def amoeba2Dxx(amoeba_struct, seed_target, seed_clutter, apply_holdout=True):
     #if nargin == 0
     #error('amoeba2Dxx requires amoeba_struct');
     #end#if
@@ -21,7 +21,8 @@ def amoeba2Dxx(amoeba_struct, seed_target, seed_clutter):
     ## exponential is too regular...
     amoeba_struct.fourier_ratio = (1.0 / (arange(0,amoeba_struct.num_fourier)+1)**1.5  );
     amoeba_struct.fourier_ratio[0:2] = 0;
-    amoeba_struct.fourier_ratio[amoeba_struct.fourier_min_holdout:amoeba_struct.fourier_max_holdout] = 0;
+    if apply_holdout:
+        amoeba_struct.fourier_ratio[amoeba_struct.fourier_min_holdout:amoeba_struct.fourier_max_holdout] = 0;
     amoeba_struct.delta_segment = amoeba_struct.num_phi / amoeba_struct.num_segments;
 
     if (amoeba_struct.num_targets > 0) and (int(seed_target)>=0):
