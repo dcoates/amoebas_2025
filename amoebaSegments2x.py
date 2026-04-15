@@ -97,8 +97,19 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
     fourier_sum                            = sum(fourier_term, 0);
     fourier_max                            = np.max(fourier_sum);
     fourier_min                            = np.min(fourier_sum);
-    if (distractor_flag == 1) and (amoeba_struct.random_distractor_sizes):
-        which_size=np.random.randint(3)
+
+    if (distractor_flag == 1):
+        if amoeba_struct.distractor_size=="all":
+            which_size=np.random.randint(3)
+        elif amoeba_struct.distractor_size=="same":
+            outer_max=amoeba_struct.target_size
+        elif amoeba_struct.distractor_size=="small":
+            which_size=0
+        elif amoeba_struct.distractor_size=="medium":
+            which_size=1
+        elif amoeba_struct.distractor_size=="large":
+            which_size=2
+
         if which_size==0:
             outer_max=amoeba_struct.outer_max_S
             outer_min=amoeba_struct.outer_min_S
@@ -119,6 +130,7 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
         outer_min=amoeba_struct.target_outer_min
         inner_max=amoeba_struct.inner_max
         inner_min=amoeba_struct.inner_min
+
     outer_diameter                         = \
         ( random.rand(1) * ( outer_max - outer_min ) + outer_min ) * fix(amoeba_struct.image_rect_size/2);
     inner_diameter                         = \

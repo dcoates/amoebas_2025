@@ -1,5 +1,5 @@
 class AmoebaStruct:
-    def __init__(self,ntargets,size="large"):
+    def __init__(self,ntargets,size="large",distractor_size="all"):
         self.name                    = 'amoeba2D';
         #rand('twister', sum(100*clock));
         #self.rand_state              = {rand('twister')};
@@ -21,16 +21,19 @@ class AmoebaStruct:
         self.outer_min_L        = 0.60;
         self.outer_max_L        = 0.85;
         if size=='small':
+            self.target_size = 0
             self.target_outer_max        = self.outer_max_S
             self.target_outer_min        = self.outer_min_S
         elif size=='medium':
+            self.target_size = 1
             self.target_outer_max        = self.outer_max_M
             self.target_outer_min        = self.outer_min_M
         else: # Large is also default
+            self.target_size = 2
             self.target_outer_max        = self.outer_max_L
             self.target_outer_min        = self.outer_min_L
 
-        self.random_distractor_sizes = 1; # Randomize (S/M or L) the size of each distractor segment?
+        self.distractor_size = distractor_size; # Randomize (S/M or L) the size of each distractor segment?
         self.inner_max        = 0.75;##max/min inner radius in units of outer radius
         self.inner_min        = 0.15;##
         self.num_phi                 = 1024;
