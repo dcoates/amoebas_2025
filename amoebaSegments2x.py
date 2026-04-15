@@ -102,7 +102,7 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
         if amoeba_struct.distractor_size=="all":
             which_size=np.random.randint(3)
         elif amoeba_struct.distractor_size=="same":
-            outer_max=amoeba_struct.target_size
+            which_size=amoeba_struct.target_size
         elif amoeba_struct.distractor_size=="small":
             which_size=0
         elif amoeba_struct.distractor_size=="medium":
