@@ -54,17 +54,21 @@ def create_app2():
 		seed_target=request.args.get('seed_target')
 		seed_clutter=request.args.get('seed_clutter')
 		size=request.args.get('size')
+		dsize=request.args.get('dist_size')
+		num_distractors=request.args.get('num_distractors')
 
 		DEBUG_COLORS=False
 
 		is_target = (int(seed_target)>=0)
-		amoeba_struct = makeAmoebasX.AmoebaStruct(is_target,size)
+		amoeba_struct = makeAmoebasX.AmoebaStruct(is_target,size,dsize)
 
 		if is_target:
 			amoeba_struct.num_targets = 1
 		else:
 			amoeba_struct.num_targets = 0
-		amoeba_struct.num_distractors   = 4 - amoeba_struct.num_targets
+
+		amoeba_struct.num_distractors = num_distractors #2 - amoeba_struct.num_targets
+
 		res=amoeba2Dxx.amoeba2Dxx( amoeba_struct, seed_target, seed_clutter )
 		[s,xs,ys]=res
 		buf = np.zeros((amoeba_struct.image_rect_size, amoeba_struct.image_rect_size), dtype=np.uint8)

@@ -38,9 +38,13 @@ def amoeba2Dxx(amoeba_struct, seed_target, seed_clutter, apply_holdout=True):
         random.seed(int64(seed_clutter))
 
 		##make distractors
-        for i_amoeba in arange(amoeba_struct.num_targets,amoeba_struct.num_targets + amoeba_struct.num_distractors):
-            [amoeba_struct, amoeba_image_x1, amoeba_image_y1] = amoebaSegments2x(amoeba_struct, 1);
+        fractional_distractors_left = amoeba_struct.num_distractors
+        while fractional_distractors_left > 0:
+        #for i_amoeba in arange(amoeba_struct.num_targets,amoeba_struct.num_distractors):
+            [amoeba_struct, amoeba_image_x1, amoeba_image_y1] = amoebaSegments2x(amoeba_struct, 1, min( (fractional_distractors_left,1.0) ) );
             amoebas_image_x += [amoeba_image_x1];
             amoebas_image_y += [amoeba_image_y1];
+
+            fractional_distractors_left -= 1
 
     return amoeba_struct, amoebas_image_x, amoebas_image_y

@@ -11,7 +11,9 @@ def pol2cart(theta_radians,rho):
     y = rho * sin(theta_radians)
     return x, y
 
-def amoebaSegments2x(amoeba_struct, distractor_flag):
+def amoebaSegments2x(amoeba_struct, distractor_flag, fractional_percentage=1.0):
+    ## distractor_flag : 0 or 1. If 1, rotate the segments since it's a distractor
+    ## fractional percentage: 0 to 1. Use only thisa portion of the total segments in the this object
 
     ## gap_offest                         = amoeba_struct.delta_segment * random.rand(1);
     ## old method made segments of fixed length
@@ -20,6 +22,10 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
     ## new method makes segments of variable length
     amoeba_struct.num_segments             = amoeba_struct.min_num_segments - 1 + int(ceil((amoeba_struct.max_num_segments -
                                                                                         amoeba_struct.min_num_segments + 1) * random.rand(1))[0]);
+    fractional_percentage=1.0
+    if fractional_percentage<1:
+        amoeba_struct.num_segments             = amoeba_struct.max_num_segments # When reducing for fractional, start with the max possible
+
     delta_gap                              = list( amoeba_struct.min_gap - 1 + ceil(random.rand(amoeba_struct.num_segments) *
                                                                               (amoeba_struct.max_gap - amoeba_struct.min_gap + 1)) )
     segments_start                         = list( sorted(ceil(random.rand(amoeba_struct.num_segments) * amoeba_struct.num_phi) ) )
@@ -42,14 +48,16 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
 
         #print( segments_start, delta_gap )
 
+    #print( amoeba_struct.num_segments, amoeba_struct.max_num_segments ) # DC
+
     ## define start and end points of each segment including the gaps between segments
-    cumsum_gap                             = cumsum(delta_gap);   
+    cumsum_gap                             = cumsum(delta_gap);
     segments_end                           = roll(segments_start,-1);
     segments_end[-1]                      = amoeba_struct.num_phi + segments_start[0];
     segments_start                         = segments_start + cumsum_gap;
     segments_end                           = segments_end   + cumsum_gap;
 
-    #print( segments_start, segments_end )
+    #print( segments_start, segments_end ) #DC
     ## fix bondaries
     ## first remove any segments greater than 2*pi (but keep the first wrap-around values)
     excess_segments_ndx                    = where(segments_start > amoeba_struct.num_phi)[0]
@@ -84,6 +92,7 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
     #print( segments_start, segments_end )
 
     amoeba_struct.num_segments             = len(segments_start);
+    #print( "actual #seg: ", amoeba_struct.num_segments ) # DC
     list_segments                          = dstack( (segments_start, segments_end) )[0];
 
     randn_vals = norm.ppf(random.rand(amoeba_struct.num_fourier)) # In order to match with MATLAB exactly (rand equiv, randn not)
@@ -141,6 +150,15 @@ def amoebaSegments2x(amoeba_struct, distractor_flag):
  
     amoeba_image_x = []
     amoeba_image_y = []
+
+    #print( list_segments)
+    if fractional_percentage<=1.0:# Always run this. Keeps the Random Gen consistent for complete vs. partial
+       # List of indices, permute, keep N
+       keepers = np.random.permutation( np.arange(len(list_segments))) [0:int(np.floor(len(list_segments)*fractional_percentage))]
+       keepers = np.sort( keepers) # keep in original order, to keep segments mostly together
+       list_segments = list_segments[keepers]
+       amoeba_struct.num_segments=len(list_segments)
+
     for nseg, seg1 in enumerate(list_segments):
         idx_first = int(seg1[0]-1)
         idx_last  = int(seg1[1]-1)
