@@ -22,7 +22,6 @@ def amoebaSegments2x(amoeba_struct, distractor_flag, fractional_percentage=1.0):
     ## new method makes segments of variable length
     amoeba_struct.num_segments             = amoeba_struct.min_num_segments - 1 + int(ceil((amoeba_struct.max_num_segments -
                                                                                         amoeba_struct.min_num_segments + 1) * random.rand(1))[0]);
-    fractional_percentage=1.0
     if fractional_percentage<1:
         amoeba_struct.num_segments             = amoeba_struct.max_num_segments # When reducing for fractional, start with the max possible
 
@@ -153,11 +152,17 @@ def amoebaSegments2x(amoeba_struct, distractor_flag, fractional_percentage=1.0):
 
     #print( list_segments)
     if fractional_percentage<=1.0:# Always run this. Keeps the Random Gen consistent for complete vs. partial
-       # List of indices, permute, keep N
-       keepers = np.random.permutation( np.arange(len(list_segments))) [0:int(np.floor(len(list_segments)*fractional_percentage))]
-       keepers = np.sort( keepers) # keep in original order, to keep segments mostly together
+       first = np.random.randint( len(list_segments) )
+       num = np.floor(len(list_segments)*fractional_percentage)
+       keepers = np.arange( first, first+num, dtype='int' )
+
+       # Fix wraparounders:
+       keepers[keepers>=len(list_segments)] -= len(list_segments)
+
        list_segments = list_segments[keepers]
        amoeba_struct.num_segments=len(list_segments)
+
+
 
     for nseg, seg1 in enumerate(list_segments):
         idx_first = int(seg1[0]-1)
